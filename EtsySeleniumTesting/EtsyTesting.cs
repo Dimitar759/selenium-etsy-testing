@@ -62,7 +62,7 @@ namespace ConsoleApp11
             IWebElement registerButton = driver.FindElement(By.Name("submit_attempt"));
             registerButton.Click();
 
-            //The wait is for the user to manually solve the recaptcha.
+            //The wait is for the user to manually solve the recaptcha. 
             wait.Until(UrlToBe("https://www.etsy.com/?"));
 
             string expectedUrl = "https://www.etsy.com/?";
@@ -151,7 +151,22 @@ namespace ConsoleApp11
         }
 
 
+        public void TestingGit()
+        {
 
+            driver.Navigate().GoToUrl("https://www.etsy.com/listing/1109747524/casio-gold-a168wg-original-digital?click_key=ca4ba66e932cebdb97109f4fcf17dcc78adfa2c2%3A1109747524&click_sum=a87c8fb9&ref=hp_rv-1&pro=1&frs=1");
+
+            WebDriverWait wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            IWebElement addToCartButton = driver.FindElement(By.CssSelector("div[data-selector='add-to-cart-button']"));
+            addToCartButton.Click();
+
+            IWebElement viewCartButton = driver.FindElement(By.CssSelector("a.wt-btn.wt-btn--primary.wt-width-full"));
+            viewCartButton.Click();
+
+            IWebElement itemInCart = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//p[@class='wt-text-title-01']/a")));
+
+            Assert.IsTrue(itemInCart.Displayed, "Item was not added to the cart.");
+        }
 
 
 
