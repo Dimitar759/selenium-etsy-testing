@@ -38,119 +38,181 @@ namespace ConsoleApp11
 
         }
 
+        //[Test]
+        //public void Register()
+        //{
+        //    driver.Navigate().GoToUrl("https://www.etsy.com/");
+
+        //    IWebElement signinbutton = driver.FindElement(By.ClassName("signin-header-action"));
+        //    signinbutton.Click();
+
+        //    IWebElement signupbutton = driver.FindElement(By.ClassName("select-register"));
+        //    signupbutton.Click();
+
+        //    string randomEmail = GenerateRandomEmail(); 
+        //    IWebElement emailfield = wait.Until(ElementToBeClickable(By.Id("join_neu_email_field")));
+        //    emailfield.SendKeys(randomEmail);
+
+        //    IWebElement firstName = driver.FindElement(By.Id("join_neu_first_name_field"));
+        //    firstName.SendKeys("Aba");
+
+        //    IWebElement passwordfield = driver.FindElement(By.Id("join_neu_password_field"));
+        //    passwordfield.SendKeys("asdasd123123");
+
+        //    IWebElement registerButton = driver.FindElement(By.Name("submit_attempt"));
+        //    registerButton.Click();
+
+        //    //The wait is for the user to manually solve the recaptcha. 
+        //    wait.Until(UrlToBe("https://www.etsy.com/?"));
+
+        //    string expectedUrl = "https://www.etsy.com/?";
+        //    string actualUrl = driver.Url;
+
+        //    Assert.AreEqual(expectedUrl, actualUrl);
+
+
+        //}
+        //private string GenerateRandomEmail()
+        //{
+        //    string baseEmail = "abaandpreach";
+        //    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //    string randomEmail = $"{baseEmail}{timestamp}@gmail.com";
+
+        //    return randomEmail;
+        //}
+
+
+
+        //[Test]
+        //public void Login()
+        //{
+        //    driver.Navigate().GoToUrl("https://www.etsy.com/");
+
+        //    IWebElement signinbutton = driver.FindElement(By.ClassName("signin-header-action"));
+        //    signinbutton.Click();
+
+        //    IWebElement emailfield = driver.FindElement(By.Id("join_neu_email_field"));
+        //    emailfield.SendKeys("dimitarnikolov769@gmail.com");
+
+        //    IWebElement passwordfield = driver.FindElement(By.Id("join_neu_password_field"));
+        //    passwordfield.SendKeys("ddiimmiittaarr12345");
+
+        //    IWebElement singinbutton = driver.FindElement(By.Name("submit_attempt"));
+        //    singinbutton.Click();
+
+        //    //The wait is for the user to manually solve the recaptcha. 
+        //    wait.Until(UrlToBe("https://www.etsy.com/?"));
+
+        //    string expectedurl = "https://www.etsy.com/?";
+        //    string actualurl = driver.Url;
+        //    Assert.AreEqual(expectedurl, actualurl);
+
+        //}
+
+
+
+        //[Test]
+        //public void SearchResults()
+        //{
+        //    driver.Navigate().GoToUrl("https://www.etsy.com/");
+
+        //    IWebElement searchBar = driver.FindElement(By.Name("search_query"));
+        //    searchBar.SendKeys("Casio Watch");
+
+        //    IWebElement searchButton = driver.FindElement(By.CssSelector("button[aria-label='Search']"));
+        //    searchButton.Click();
+
+        //    string expectedURL = "https://www.etsy.com/search?q=Casio%20Watch&ref=search_bar";
+        //    string actualURL = driver.Url;
+
+        //    Assert.AreEqual(expectedURL, actualURL);
+
+
+        //}
+
+
+
+        //[Test]
+        //public void ShoppingCart()
+        //{
+
+        //    driver.Navigate().GoToUrl("https://www.etsy.com/listing/1109747524/casio-gold-a168wg-original-digital?click_key=ca4ba66e932cebdb97109f4fcf17dcc78adfa2c2%3A1109747524&click_sum=a87c8fb9&ref=hp_rv-1&pro=1&frs=1");
+
+        //    WebDriverWait wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+        //    IWebElement addToCartButton = driver.FindElement(By.CssSelector("div[data-selector='add-to-cart-button']"));
+        //    addToCartButton.Click();
+
+        //    IWebElement viewCartButton = driver.FindElement(By.CssSelector("a.wt-btn.wt-btn--primary.wt-width-full"));
+        //    viewCartButton.Click();
+
+        //    IWebElement itemInCart = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//p[@class='wt-text-title-01']/a")));
+
+        //    Assert.IsTrue(itemInCart.Displayed, "Item was not added to the cart.");
+        //}
+
         [Test]
-        public void Register()
+        public void ChangingProfileInformation()
         {
             driver.Navigate().GoToUrl("https://www.etsy.com/");
 
-            IWebElement signinbutton = driver.FindElement(By.ClassName("signin-header-action"));
-            signinbutton.Click();
+            IWebElement signinButton = driver.FindElement(By.ClassName("signin-header-action"));
+            signinButton.Click();
 
-            IWebElement signupbutton = driver.FindElement(By.ClassName("select-register"));
-            signupbutton.Click();
+            IWebElement emailField = driver.FindElement(By.Id("join_neu_email_field"));
+            emailField.SendKeys("dimitarnikolov769@gmail.com");
 
-            string randomEmail = GenerateRandomEmail(); 
-            IWebElement emailfield = wait.Until(ElementToBeClickable(By.Id("join_neu_email_field")));
-            emailfield.SendKeys(randomEmail);
+            IWebElement passwordField = driver.FindElement(By.Id("join_neu_password_field"));
+            passwordField.SendKeys("ddiimmiittaarr12345");
 
-            IWebElement firstName = driver.FindElement(By.Id("join_neu_first_name_field"));
-            firstName.SendKeys("Aba");
+            IWebElement singinButton = driver.FindElement(By.Name("submit_attempt"));
+            singinButton.Click();
 
-            IWebElement passwordfield = driver.FindElement(By.Id("join_neu_password_field"));
-            passwordfield.SendKeys("asdasd123123");
-
-            IWebElement registerButton = driver.FindElement(By.Name("submit_attempt"));
-            registerButton.Click();
-
-            //The wait is for the user to manually solve the recaptcha. 
+            // Wait for the user to manually solve the CAPTCHA
             wait.Until(UrlToBe("https://www.etsy.com/?"));
 
-            string expectedUrl = "https://www.etsy.com/?";
-            string actualUrl = driver.Url;
+            IWebElement accountDropdownButton = driver.FindElement(By.CssSelector("button[aria-label='You']"));
+            accountDropdownButton.Click();
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            IWebElement accountSettingsButton = driver.FindElement(By.CssSelector("a[role='menuitem'][href='https://www.etsy.com/your/account?ref=hdr_user_menu-settings']"));
+            accountSettingsButton.Click();
 
+            driver.SwitchTo().Window(driver.WindowHandles.Last());
 
-        }
-        private string GenerateRandomEmail()
-        {
-            string baseEmail = "abaandpreach";
-            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            string randomEmail = $"{baseEmail}{timestamp}@gmail.com";
+            IWebElement editProfileButton = driver.FindElement(By.CssSelector("button[class='wt-btn wt-btn--secondary wt-btn--small']"));
+            editProfileButton.Click();
 
-            return randomEmail;
-        }
+            IWebElement nameChangeLink = driver.FindElement(By.CssSelector("a[class='request-name-change overlay-trigger']"));
+            nameChangeLink.Click();
 
+            IWebElement iframeElement = driver.FindElement(By.Id("namechange-overlay"));
 
+            IWebElement firstNameInput = driver.FindElement(By.Name("new-first-name"));
+            firstNameInput.Clear(); 
+            firstNameInput.SendKeys("Dimitar"); 
 
-        [Test]
-        public void Login()
-        {
-            driver.Navigate().GoToUrl("https://www.etsy.com/");
+            IWebElement lastNameInput = driver.FindElement(By.Name("new-last-name"));
+            lastNameInput.Clear(); 
+            lastNameInput.SendKeys("Nikolov");
 
-            IWebElement signinbutton = driver.FindElement(By.ClassName("signin-header-action"));
-            signinbutton.Click();
+            IWebElement saveChangesButton = driver.FindElement(By.Name("save"));
+            saveChangesButton.Click();
 
-            IWebElement emailfield = driver.FindElement(By.Id("join_neu_email_field"));
-            emailfield.SendKeys("dimitarnikolov769@gmail.com");
+            IWebElement genderButton = driver.FindElement(By.Id("male"));
+            genderButton.Click();
 
-            IWebElement passwordfield = driver.FindElement(By.Id("join_neu_password_field"));
-            passwordfield.SendKeys("ddiimmiittaarr12345");
+            IWebElement cityField = driver.FindElement(By.Id("city3"));
+            cityField.Clear();
+            cityField.SendKeys("Skopje, North Macedonia");
 
-            IWebElement singinbutton = driver.FindElement(By.Name("submit_attempt"));
-            singinbutton.Click();
+            IWebElement birthMonthDropdown = driver.FindElement(By.Id("birth-month"));
 
-            //The wait is for the user to manually solve the recaptcha. 
-            wait.Until(UrlToBe("https://www.etsy.com/?"));
+            // Wrap the <select> element in a SelectElement
+            SelectElement select = new SelectElement(birthMonthDropdown);
 
-            string expectedurl = "https://www.etsy.com/?";
-            string actualurl = driver.Url;
-            Assert.AreEqual(expectedurl, actualurl);
-
-        }
-
-
-
-        [Test]
-        public void SearchResults()
-        {
-            driver.Navigate().GoToUrl("https://www.etsy.com/");
-
-            IWebElement searchBar = driver.FindElement(By.Name("search_query"));
-            searchBar.SendKeys("Casio Watch");
-
-            IWebElement searchButton = driver.FindElement(By.CssSelector("button[aria-label='Search']"));
-            searchButton.Click();
-
-            string expectedURL = "https://www.etsy.com/search?q=Casio%20Watch&ref=search_bar";
-            string actualURL = driver.Url;
-
-            Assert.AreEqual(expectedURL, actualURL);
-
+            // Use LINQ to directly select the "September" option
+            select.SelectByText("September");
 
         }
-
-
-
-        [Test]
-        public void ShoppingCart()
-        {
-            
-            driver.Navigate().GoToUrl("https://www.etsy.com/listing/1109747524/casio-gold-a168wg-original-digital?click_key=ca4ba66e932cebdb97109f4fcf17dcc78adfa2c2%3A1109747524&click_sum=a87c8fb9&ref=hp_rv-1&pro=1&frs=1");
-
-            WebDriverWait wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement addToCartButton = driver.FindElement(By.CssSelector("div[data-selector='add-to-cart-button']"));
-            addToCartButton.Click();
-
-            IWebElement viewCartButton = driver.FindElement(By.CssSelector("a.wt-btn.wt-btn--primary.wt-width-full"));
-            viewCartButton.Click();
-
-            IWebElement itemInCart = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//p[@class='wt-text-title-01']/a")));
-
-            Assert.IsTrue(itemInCart.Displayed, "Item was not added to the cart.");
-        }
-        
-        ////asdfasdfasdfasdf//fasdfasd
 
     }
 }
