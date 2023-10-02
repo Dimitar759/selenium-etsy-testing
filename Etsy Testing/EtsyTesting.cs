@@ -273,7 +273,7 @@ namespace ConsoleApp11
                  "Newman",
                  "Bush",
         
-            };
+            }; 
 
             Random random = new Random();
             int index = random.Next(0, lastNames.Count);
