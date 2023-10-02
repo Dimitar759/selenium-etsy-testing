@@ -149,6 +149,8 @@ namespace ConsoleApp11
 
             Assert.IsTrue(itemInCart.Displayed, "Item was not added to the cart.");
         }
+        
+        ////asdfasdfasdfasdf//fasdfasd
 
     }
 }
