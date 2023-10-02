@@ -155,6 +155,9 @@ namespace ConsoleApp11
         {
             driver.Navigate().GoToUrl("https://www.etsy.com/");
 
+            WebDriverWait wait2;
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+
             IWebElement signinButton = driver.FindElement(By.ClassName("signin-header-action"));
             signinButton.Click();
 
@@ -187,19 +190,15 @@ namespace ConsoleApp11
             IWebElement iframeElement = driver.FindElement(By.Id("namechange-overlay"));
 
             IWebElement firstNameInput = driver.FindElement(By.Name("new-first-name"));
-            firstNameInput.Clear(); 
-            firstNameInput.SendKeys("Dimitar"); 
+            firstNameInput.Clear();
+            firstNameInput.SendKeys(GenerateRandomFirstName());
 
             IWebElement lastNameInput = driver.FindElement(By.Name("new-last-name"));
-            lastNameInput.Clear(); 
-            lastNameInput.SendKeys("Nikolov");
+            lastNameInput.Clear();
+            lastNameInput.SendKeys(GenerateRandomLastName());
 
-            IWebElement saveChangesButton = driver.FindElement(By.Name("save"));
-            saveChangesButton.Click();
-
-            WebDriverWait wait2;
-            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            wait2.Until(InvisibilityOfElementLocated(By.Id("exposeMask")));
+            IWebElement saveChangesNameAndSurnameButton = driver.FindElement(By.Name("save"));
+            saveChangesNameAndSurnameButton.Click();
 
             IWebElement genderButton = driver.FindElement(By.Id("male"));
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -212,15 +211,73 @@ namespace ConsoleApp11
 
             IWebElement birthMonthDropdown = driver.FindElement(By.Id("birth-month"));
 
-            // Wrap the <select> element in a SelectElement
-            SelectElement select = new SelectElement(birthMonthDropdown);
+            SelectElement selectMonth = new SelectElement(birthMonthDropdown);
 
-            // Use LINQ to directly select the "September" option
-            select.SelectByText("September");
+            selectMonth.SelectByText("September");
 
-            Thread.Sleep(5000);
+            IWebElement birthDayDropdown = driver.FindElement(By.Id("birth-day"));
+
+            SelectElement selectDay = new SelectElement(birthDayDropdown);
+
+            selectDay.SelectByIndex(14);
+
+            IWebElement aboutField = driver.FindElement(By.Id("bio"));
+            aboutField.Clear();
+            aboutField.SendKeys("I am a 22 year old junior tester looking for a job");
+
+            IWebElement materialsField = driver.FindElement(By.Id("materials"));
+            materialsField.Clear();
+            materialsField.SendKeys("Meditations by Marcus Aurelius");
+
+            IWebElement saveChangesOnProfileInfo = driver.FindElement(By.CssSelector("input[type='submit']"));
+            saveChangesOnProfileInfo.Click();
+
+            IWebElement successMessage = wait2.Until(ElementIsVisible(By.XPath("//div[@id='messages']//h3[text()='Your changes have been saved.']")));
+
+            Assert.IsTrue(successMessage.Displayed, "Success message 'Your changes have been saved.' is displayed.");
+
 
         }
 
+        public string GenerateRandomFirstName()
+        {
+            List<string> firstNames = new List<string>
+            {
+                 "John",
+                 "Jane",
+                 "Michael",
+                 "Emily",
+                 "Ben",
+                 "Rachel",
+                 "Chandler",
+                 "Eva",
+                 "Dimitar",
+        
+            };
+
+            Random random = new Random();
+            int index = random.Next(0, firstNames.Count);
+            return firstNames[index];
+        }
+
+        public string GenerateRandomLastName()
+        {
+            List<string> lastNames = new List<string>
+            {
+                 "Smith",
+                 "Johnson",
+                 "Brown",
+                 "Davis",
+                 "Tennison",
+                 "Kenley",
+                 "Newman",
+                 "Bush",
+        
+            };
+
+            Random random = new Random();
+            int index = random.Next(0, lastNames.Count);
+            return lastNames[index];
+        }
     }
 }
