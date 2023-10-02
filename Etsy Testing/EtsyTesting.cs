@@ -197,7 +197,13 @@ namespace ConsoleApp11
             IWebElement saveChangesButton = driver.FindElement(By.Name("save"));
             saveChangesButton.Click();
 
+            WebDriverWait wait2;
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            wait2.Until(InvisibilityOfElementLocated(By.Id("exposeMask")));
+
             IWebElement genderButton = driver.FindElement(By.Id("male"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView();", genderButton);
             genderButton.Click();
 
             IWebElement cityField = driver.FindElement(By.Id("city3"));
@@ -211,6 +217,8 @@ namespace ConsoleApp11
 
             // Use LINQ to directly select the "September" option
             select.SelectByText("September");
+
+            Thread.Sleep(5000);
 
         }
 
