@@ -327,7 +327,7 @@ namespace ConsoleApp11
             driver.Navigate().GoToUrl("https://www.etsy.com/featured/");
 
             WebDriverWait wait2;
-            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             IWebElement homeAndLivingHoverButton = driver.FindElement(By.Id("catnav-primary-link-891"));
 
@@ -357,15 +357,21 @@ namespace ConsoleApp11
             IWebElement macedoniaButton = shippingLocation.FirstOrDefault(el => el.Text.Contains("Macedonia"));
             macedoniaButton.Click();
 
-            IWebElement applyButton = driver.FindElement(By.CssSelector("button[form='search-filter-form']"));
+            IWebElement applyButton = wait2.Until(ElementExists(By.CssSelector("button[form='search-filter-form']")));
             applyButton.Click();
 
-            List<IWebElement> priceFilterElements = driver.FindElements(By.CssSelector("a[aria-label='Remove USD 25 – USD 50 Filter']")).ToList();
-            List<IWebElement> europeFilterElements = driver.FindElements(By.CssSelector("a[aria-label='Remove Items from Europe Filter']")).ToList();
+            IWebElement usdFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove USD 25 &ndash; USD 50 Filter'][class*='wt-btn--small active']"));
+            Assert.IsNotNull(usdFilter, "USD 25 – USD 50 filter is not active.");
 
-            // Assert that the elements are present
-            Assert.IsTrue(priceFilterElements.Count > 0, "Price filter element is not present on the page.");
-            Assert.IsTrue(europeFilterElements.Count > 0, "Europe filter element is not present on the page.");
+            IWebElement europeFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove Items from Europe Filter'][class*='wt-btn--small active']"));
+            Assert.IsNotNull(europeFilter, "Items from Europe filter is not active.");
+
+            IWebElement freeShippingFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove FREE shipping Filter'][class*='wt-btn--small active']"));
+            Assert.IsNotNull(freeShippingFilter, "FREE shipping filter is not active.");
+
+            IWebElement blueFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove Blue Filter'][class*='wt-btn--small active']"));
+            Assert.IsNotNull(blueFilter, "Blue filter is not active.");
+
 
 
 
