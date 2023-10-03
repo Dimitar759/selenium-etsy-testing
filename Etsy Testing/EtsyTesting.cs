@@ -6,8 +6,8 @@ using static SeleniumExtras.WaitHelpers.ExpectedConditions;
 using System.Linq;
 using System.Xml.Linq;
 using SeleniumExtras.WaitHelpers;
-
-
+using OpenQA.Selenium.Interactions;
+using System.Reflection.Emit;
 
 namespace ConsoleApp11
 {
@@ -141,7 +141,7 @@ namespace ConsoleApp11
 
 
         [Test]
-        public void addingToShoppingCart()
+        public void AddingToShoppingCart()
         {
             WebDriverWait wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 
@@ -292,7 +292,7 @@ namespace ConsoleApp11
 
 
         [Test]
-        public void productNameOnProductPageAndShoppingCartPage()
+        public void ProductNameOnProductPageAndShoppingCartPage()
         {
             driver.Navigate().GoToUrl("https://www.etsy.com/listing/1109747524/casio-gold-a168wg-original-digital?click_key=ca4ba66e932cebdb97109f4fcf17dcc78adfa2c2%3A1109747524&click_sum=a87c8fb9&ref=hp_rv-1&pro=1&frs=1");
 
@@ -320,6 +320,59 @@ namespace ConsoleApp11
 
 
         }
+
+        [Test]
+        public void FilteringProducts()
+        {
+            driver.Navigate().GoToUrl("https://www.etsy.com/featured/");
+
+            WebDriverWait wait2;
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+
+            IWebElement homeAndLivingHoverButton = driver.FindElement(By.Id("catnav-primary-link-891"));
+
+            Actions action = new Actions(driver);
+            action.MoveToElement(homeAndLivingHoverButton).Perform();
+
+            IWebElement candlesAndHoldersButton = driver.FindElement(By.Id("catnav-l4-10965"));
+            candlesAndHoldersButton.Click();
+
+            IWebElement filterButton = wait2.Until(ElementToBeClickable(By.CssSelector("button[aria-controls='search-filters-overlay']")));
+            filterButton.Click();
+
+            IWebElement priceRangeButton = wait2.Until(ElementToBeClickable(By.CssSelector("label[for='price-input-2']")));
+            priceRangeButton.Click();
+
+            IWebElement freeShippingButton = driver.FindElement(By.CssSelector("label[for='special-offers-free-shipping']"));
+            freeShippingButton.Click();
+
+            IWebElement colorButton = driver.FindElement(By.CssSelector("label[for='attr_1-2']"));
+            colorButton.Click();
+
+            IWebElement locationEuropeButton = driver.FindElement(By.CssSelector("label[for='shop-location-input-1']"));
+            locationEuropeButton.Click();
+
+            List<IWebElement> shippingLocation = driver.FindElements(By.Id("ship_to_select")).ToList();
+
+            IWebElement macedoniaButton = shippingLocation.FirstOrDefault(el => el.Text.Contains("Macedonia"));
+            macedoniaButton.Click();
+
+            IWebElement applyButton = driver.FindElement(By.CssSelector("button[form='search-filter-form']"));
+            applyButton.Click();
+
+            List<IWebElement> priceFilterElements = driver.FindElements(By.CssSelector("a[aria-label='Remove USD 25 – USD 50 Filter']")).ToList();
+            List<IWebElement> europeFilterElements = driver.FindElements(By.CssSelector("a[aria-label='Remove Items from Europe Filter']")).ToList();
+
+            // Assert that the elements are present
+            Assert.IsTrue(priceFilterElements.Count > 0, "Price filter element is not present on the page.");
+            Assert.IsTrue(europeFilterElements.Count > 0, "Europe filter element is not present on the page.");
+
+
+
+
+
+        }
+
 
     }
 }
