@@ -103,9 +103,17 @@ namespace ConsoleApp11
             //The wait is for the user to manually solve the recaptcha. 
             wait.Until(UrlToBe("https://www.etsy.com/?"));
 
+            IWebElement welcomeMessage = driver.FindElement(By.CssSelector("div[data-appears-component-name='Homepage_Vesta_View_WelcomeMessage']"));
+            string expectedText = "Welcome";
+            string actualText = welcomeMessage.Text;
+
+            Assert.IsTrue(actualText.Contains(expectedText));
+
             string expectedurl = "https://www.etsy.com/?";
             string actualurl = driver.Url;
             Assert.AreEqual(expectedurl, actualurl);
+
+            
 
         }
 
@@ -133,21 +141,22 @@ namespace ConsoleApp11
 
 
         [Test]
-        public void ShoppingCart()
+        public void addingToShoppingCart()
         {
+            WebDriverWait wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 
             driver.Navigate().GoToUrl("https://www.etsy.com/listing/1109747524/casio-gold-a168wg-original-digital?click_key=ca4ba66e932cebdb97109f4fcf17dcc78adfa2c2%3A1109747524&click_sum=a87c8fb9&ref=hp_rv-1&pro=1&frs=1");
 
-            WebDriverWait wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             IWebElement addToCartButton = driver.FindElement(By.CssSelector("div[data-selector='add-to-cart-button']"));
             addToCartButton.Click();
 
-            IWebElement viewCartButton = driver.FindElement(By.CssSelector("a.wt-btn.wt-btn--primary.wt-width-full"));
+            IWebElement viewCartButton = driver.FindElement(By.CssSelector("a[data-selector='post-atc-overlay-go-to-cart-button']"));
             viewCartButton.Click();
 
-            IWebElement itemInCart = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//p[@class='wt-text-title-01']/a")));
+            IWebElement itemInCart = wait2.Until(ExpectedConditions.ElementIsVisible(By.XPath("//p[@class='wt-text-title-01']/a")));
 
             Assert.IsTrue(itemInCart.Displayed, "Item was not added to the cart.");
+
         }
 
         [Test]
@@ -279,5 +288,38 @@ namespace ConsoleApp11
             int index = random.Next(0, lastNames.Count);
             return lastNames[index];
         }
+
+
+
+        [Test]
+        public void productNameOnProductPageAndShoppingCartPage()
+        {
+            driver.Navigate().GoToUrl("https://www.etsy.com/listing/1109747524/casio-gold-a168wg-original-digital?click_key=ca4ba66e932cebdb97109f4fcf17dcc78adfa2c2%3A1109747524&click_sum=a87c8fb9&ref=hp_rv-1&pro=1&frs=1");
+
+            WebDriverWait wait2;
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+
+            IWebElement elementProductName = driver.FindElement(By.CssSelector("h1[data-buy-box-listing-title='true']"));
+
+            string productNameOnProductPage = elementProductName.Text;
+
+            IWebElement addToCartButton = driver.FindElement(By.CssSelector("div[data-selector='add-to-cart-button']"));
+            addToCartButton.Click();
+
+            wait2.Until(ElementExists(By.CssSelector("div[class='wt-overlay__modal']")));
+
+            IWebElement viewCartButton = wait2.Until(ElementExists(By.CssSelector("a[data-selector='post-atc-overlay-go-to-cart-button']")));
+            viewCartButton.Click();
+            
+
+            IWebElement cartProductNameElement = driver.FindElement(By.CssSelector("a[data-title='CASIO Gold A168WG Original Digital Illuminator Watch - Casio Alarm Chrono Watch, Water resist watch Unisexs Wristwatch, Japan watch']"));
+
+            string cartProductName = cartProductNameElement.Text;
+
+            Assert.AreEqual(productNameOnProductPage, cartProductName);
+
+
+        }
+
     }
 }
