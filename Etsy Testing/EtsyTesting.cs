@@ -377,7 +377,7 @@ namespace ConsoleApp11
         }
 
         [Test]
-        public void MessagingSellers()
+        public void BuyingAProduct()
         {
             WebDriverWait wait2;
             wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -406,9 +406,8 @@ namespace ConsoleApp11
             IWebElement casioWatch = productListings.FirstOrDefault(el => el.Text.Contains("Casio watch"));
             casioWatch.Click();
 
-            IWebElement messageButton = wait2.Until(ElementExists(By.CssSelector("a[rel='nofollow'][class='wt-btn wt-btn--outline wt-width-full contact-action convo-overlay-trigger inline-overlay-trigger'][role='button']")));
-
-            messageButton.Click();
+            IWebElement buyItNowButton = driver.FindElement(By.XPath("//button[contains(text(), 'Buy it now')]"));
+            buyItNowButton.Click();
 
 
         }
