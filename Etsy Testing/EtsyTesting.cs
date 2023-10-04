@@ -113,7 +113,7 @@ namespace ConsoleApp11
             string actualurl = driver.Url;
             Assert.AreEqual(expectedurl, actualurl);
 
-            
+
 
         }
 
@@ -261,7 +261,7 @@ namespace ConsoleApp11
                  "Chandler",
                  "Eva",
                  "Dimitar",
-        
+
             };
 
             Random random = new Random();
@@ -281,8 +281,8 @@ namespace ConsoleApp11
                  "Kenley",
                  "Newman",
                  "Bush",
-        
-            }; 
+
+            };
 
             Random random = new Random();
             int index = random.Next(0, lastNames.Count);
@@ -310,7 +310,7 @@ namespace ConsoleApp11
 
             IWebElement viewCartButton = wait2.Until(ElementExists(By.CssSelector("a[data-selector='post-atc-overlay-go-to-cart-button']")));
             viewCartButton.Click();
-            
+
 
             IWebElement cartProductNameElement = driver.FindElement(By.CssSelector("a[data-title='CASIO Gold A168WG Original Digital Illuminator Watch - Casio Alarm Chrono Watch, Water resist watch Unisexs Wristwatch, Japan watch']"));
 
@@ -399,21 +399,61 @@ namespace ConsoleApp11
             //The wait is for the user to manually solve the recaptcha. 
             wait.Until(UrlToBe("https://www.etsy.com/?"));
 
-            IWebElement searchBar = driver.FindElement(By.Name("search_query"));
-            wait2.Until(ElementToBeClickable(By.Name("search_query"))).SendKeys("Casio Watch");
-            searchBar.Submit();
+            driver.Navigate().GoToUrl("https://www.etsy.com/search?q=casio%20watch&ref=search_bar");
 
             List<IWebElement> productListings = driver.FindElements(By.XPath("//div[contains(@class, 'v2-listing-card')]")).ToList();
 
-            // Find the first product with the name "Casio watch" in the list and click it
             IWebElement casioWatch = productListings.FirstOrDefault(el => el.Text.Contains("Casio watch"));
             casioWatch.Click();
 
-            List<IWebElement> meetYourSellers = driver.FindElements(By.Id("desktop_shop_owners_parent")).ToList();
+            IWebElement messageButton = wait2.Until(ElementExists(By.CssSelector("a[rel='nofollow'][class='wt-btn wt-btn--outline wt-width-full contact-action convo-overlay-trigger inline-overlay-trigger'][role='button']")));
 
-            IWebElement messageButton = meetYourSellers.FirstOrDefault(el => el.Text.Contains("Message"));
             messageButton.Click();
 
+
+        }
+
+        [Test]
+        public void GoingToHelpCenter()
+        {
+            WebDriverWait wait2;
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            driver.Navigate().GoToUrl("https://www.etsy.com/");
+
+            IWebElement signinbutton = driver.FindElement(By.ClassName("signin-header-action"));
+            signinbutton.Click();
+
+            IWebElement emailfield = driver.FindElement(By.Id("join_neu_email_field"));
+            emailfield.SendKeys("dimitarnikolov769@gmail.com");
+
+            IWebElement passwordfield = driver.FindElement(By.Id("join_neu_password_field"));
+            passwordfield.SendKeys("ddiimmiittaarr12345");
+
+            IWebElement singinbutton = driver.FindElement(By.Name("submit_attempt"));
+            singinbutton.Click();
+
+            //The wait is for the user to manually solve the recaptcha. 
+            wait.Until(UrlToBe("https://www.etsy.com/?"));
+
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("window.scrollTo(0, document.body.scrollHeight);");
+
+            IWebElement helpCenterPage = driver.FindElement(By.CssSelector("a[href='https://www.etsy.com/help?ref=ftr']"));
+            helpCenterPage.Click();
+
+            IWebElement contactUs = driver.FindElement(By.Id("contact-us-link"));
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", contactUs);
+            contactUs.Click();
+
+            driver.SwitchTo().Window(driver.WindowHandles.Last());
+
+            string expectedUrl = "https://help.etsy.com/hc/en-us/requests/new";
+            string actualUrl = driver.Url;
+
+            Assert.AreEqual(expectedUrl, actualUrl);
+
+        
 
 
         }
