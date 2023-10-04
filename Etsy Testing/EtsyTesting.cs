@@ -357,28 +357,65 @@ namespace ConsoleApp11
             IWebElement macedoniaButton = shippingLocation.FirstOrDefault(el => el.Text.Contains("Macedonia"));
             macedoniaButton.Click();
 
-            IWebElement applyButton = wait2.Until(ElementExists(By.CssSelector("button[form='search-filter-form']")));
+            IWebElement applyButton = wait2.Until(ElementExists(By.CssSelector("button[aria-label='Apply']")));
             applyButton.Click();
 
-            IWebElement usdFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove USD 25 &ndash; USD 50 Filter'][class*='wt-btn--small active']"));
+            List<IWebElement> filters = driver.FindElements(By.ClassName("wt-action-group")).ToList();
+
+            IWebElement usdFilter = filters.FirstOrDefault(el => el.Text.Contains("USD 25 – USD 50"));
             Assert.IsNotNull(usdFilter, "USD 25 – USD 50 filter is not active.");
 
-            IWebElement europeFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove Items from Europe Filter'][class*='wt-btn--small active']"));
+            IWebElement europeFilter = filters.FirstOrDefault(el => el.Text.Contains("Items from Europe"));
             Assert.IsNotNull(europeFilter, "Items from Europe filter is not active.");
 
-            IWebElement freeShippingFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove FREE shipping Filter'][class*='wt-btn--small active']"));
+            IWebElement freeShippingFilter = filters.FirstOrDefault(el => el.Text.Contains("FREE shipping"));
             Assert.IsNotNull(freeShippingFilter, "FREE shipping filter is not active.");
 
-            IWebElement blueFilter = driver.FindElement(By.CssSelector("a[aria-label='Remove Blue Filter'][class*='wt-btn--small active']"));
+            IWebElement blueFilter = filters.FirstOrDefault(el => el.Text.Contains("Blue"));
             Assert.IsNotNull(blueFilter, "Blue filter is not active.");
 
+        }
 
+        [Test]
+        public void MessagingSellers()
+        {
+            WebDriverWait wait2;
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
+            driver.Navigate().GoToUrl("https://www.etsy.com/");
+
+            IWebElement signinbutton = driver.FindElement(By.ClassName("signin-header-action"));
+            signinbutton.Click();
+
+            IWebElement emailfield = driver.FindElement(By.Id("join_neu_email_field"));
+            emailfield.SendKeys("dimitarnikolov769@gmail.com");
+
+            IWebElement passwordfield = driver.FindElement(By.Id("join_neu_password_field"));
+            passwordfield.SendKeys("ddiimmiittaarr12345");
+
+            IWebElement singinbutton = driver.FindElement(By.Name("submit_attempt"));
+            singinbutton.Click();
+
+            //The wait is for the user to manually solve the recaptcha. 
+            wait.Until(UrlToBe("https://www.etsy.com/?"));
+
+            IWebElement searchBar = driver.FindElement(By.Name("search_query"));
+            wait2.Until(ElementToBeClickable(By.Name("search_query"))).SendKeys("Casio Watch");
+            searchBar.Submit();
+
+            List<IWebElement> productListings = driver.FindElements(By.XPath("//div[contains(@class, 'v2-listing-card')]")).ToList();
+
+            // Find the first product with the name "Casio watch" in the list and click it
+            IWebElement casioWatch = productListings.FirstOrDefault(el => el.Text.Contains("Casio watch"));
+            casioWatch.Click();
+
+            List<IWebElement> meetYourSellers = driver.FindElements(By.Id("desktop_shop_owners_parent")).ToList();
+
+            IWebElement messageButton = meetYourSellers.FirstOrDefault(el => el.Text.Contains("Message"));
+            messageButton.Click();
 
 
 
         }
-
-
     }
 }
