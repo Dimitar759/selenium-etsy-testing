@@ -456,5 +456,111 @@ namespace ConsoleApp11
 
 
         }
+
+        [Test]
+        public void subscribingToNewsletter()
+        {
+            driver.Navigate().GoToUrl("https://www.etsy.com/");
+
+            WebDriverWait wait2;
+            wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+
+            executor.ExecuteScript("window.scrollTo(0, document.body.scrollHeight);");
+
+            string randomEmail = GenerateRandomEmail();
+
+            IWebElement emailField = driver.FindElement(By.Id("email-list-signup-email-input"));
+            emailField.SendKeys(randomEmail);
+
+            IWebElement subscribeButton = driver.FindElement(By.CssSelector("button[type='submit'][data-email-list-signup-btn-input]"));
+            subscribeButton.Click();
+
+            IWebElement successMessage = driver.FindElement(By.XPath("//div[contains(@class, 'wt-alert--success-01') and contains(., 'Great! We''ve sent you an email to confirm your subscription.')]"));
+            wait2.Until(ElementExists(By.XPath("//div[contains(@class, 'wt-alert--success-01') and contains(., 'Great! We''ve sent you an email to confirm your subscription.')]")));
+
+            Assert.IsTrue(successMessage.Displayed);
+        }
+
+        [Test]
+        public void OpeningABlogPost()
+        {
+            driver.Navigate().GoToUrl("https://www.etsy.com/");
+            
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+            executor.ExecuteScript("window.scrollTo(0, document.body.scrollHeight);");
+
+            IWebElement etsyBlogLink = driver.FindElement(By.CssSelector("a[href*='/blog/']"));
+            etsyBlogLink.Click();
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(UrlContains("/blog"));
+
+            IWebElement openBlogPost = driver.FindElement(By.CssSelector("a[href='/blog/gingerbread-girl?ref=blog']"));
+            openBlogPost.Click();
+
+            IWebElement randomImage = driver.FindElement(By.XPath("//a[@href='/listing/897945652/william-morris-christmas-stocking-velvet?ref=blog']"));
+
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", randomImage);
+
+            Assert.IsTrue(randomImage.Displayed);
+        }
+
+        [Test]
+        public void AddingAMessageToABlogPost()
+        {
+            driver.Navigate().GoToUrl("https://www.etsy.com/");
+
+            IWebElement signinbutton = driver.FindElement(By.ClassName("signin-header-action"));
+            signinbutton.Click();
+
+            IWebElement emailfield = driver.FindElement(By.Id("join_neu_email_field"));
+            emailfield.SendKeys("dimitarnikolov769@gmail.com");
+
+            IWebElement passwordfield = driver.FindElement(By.Id("join_neu_password_field"));
+            passwordfield.SendKeys("ddiimmiittaarr12345");
+
+            IWebElement singinbutton = driver.FindElement(By.Name("submit_attempt"));
+            singinbutton.Click();
+
+            //The wait is for the user to manually solve the recaptcha. 
+            wait.Until(UrlToBe("https://www.etsy.com/?"));
+
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+            executor.ExecuteScript("window.scrollTo(0, document.body.scrollHeight);");
+
+            IWebElement etsyBlogLink = driver.FindElement(By.CssSelector("a[href*='/blog/']"));
+            etsyBlogLink.Click();
+
+            WebDriverWait wait2 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait2.Until(UrlContains("/blog"));
+
+            IWebElement openBlogPost = driver.FindElement(By.CssSelector("a[href='/blog/gingerbread-girl?ref=blog']"));
+            openBlogPost.Click();
+
+            string randomMessage = GenerateRandomMessage();
+            IWebElement textBox = driver.FindElement(By.Id("your-comment-textarea"));
+            textBox.SendKeys(randomMessage);
+
+            IWebElement addYourCommentButton = driver.FindElement(By.ClassName("send-button"));
+            addYourCommentButton.Click();
+
+
+        }
+
+        private string GenerateRandomMessage()
+        {
+            //this is made this way for not sending the same messages to be entered more than once
+            //so i made this random message generator that should never enter the same message twice
+            string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new Random();
+            int length = random.Next(20, 100);
+            string randomMessage = new string(Enumerable.Repeat(characters, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return randomMessage;
+        }
+
     }
 }
