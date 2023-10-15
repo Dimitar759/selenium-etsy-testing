@@ -1,0 +1,34 @@
+Bug Report
+
+Title: Adding a comment issue on "https://www.etsy.com/blog/gingerbread-girl?ref=blog"
+
+Priority: Medium
+
+Severity: Moderate
+
+Description:
+When attempting to add a comment the blog post and clicking on the "Add a comment" button, the comment doesnt
+get posted and nothing happens.
+
+Preconditions: 
+The user should have a google account
+
+Steps to Reproduce:
+
+1.Open a web browser.
+2.Navigate to "https://www.etsy.com/?".
+3.Click on "Signin"
+4.Click on "Continue with Google" button
+5.Select an account
+6.Navigate to "https://www.etsy.com/blog/gingerbread-girl?ref=blog".
+7.Scroll to the "Comment Field"
+8.Type in a random comment in the field
+9.Click "Add a comment" button
+10.Observe if anything happens
+
+
+Expected Behavior:
+The comment should be added to the post
+
+Actual Behavior:
+The comment doesn't get posted and nothing happens
