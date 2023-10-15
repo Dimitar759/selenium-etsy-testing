@@ -546,6 +546,10 @@ namespace ConsoleApp11
             IWebElement addYourCommentButton = driver.FindElement(By.ClassName("send-button"));
             addYourCommentButton.Click();
 
+            //There is a bug here because nothing happens after the button is clicked
+            
+            Thread.Sleep(10000);
+
 
         }
 
