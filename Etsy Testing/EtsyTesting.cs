@@ -547,8 +547,12 @@ namespace ConsoleApp11
             addYourCommentButton.Click();
 
             //There is a bug here because nothing happens after the button is clicked
-            
-            Thread.Sleep(10000);
+
+            By confirmationLocator = By.XPath("//*[contains(text(), 'Your comment has been submitted successfully')]");
+            wait2.Until(ElementExists(confirmationLocator));
+
+            IWebElement confirmationMessage = driver.FindElement(confirmationLocator);
+            Assert.IsTrue(confirmationMessage.Displayed);
 
 
         }
