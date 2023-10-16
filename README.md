@@ -68,7 +68,7 @@ The primary objective of testing Etsy was to assess the user-friendliness, perfo
 5. Community engagement and user interaction.
 6. Mobile app usability.
 
-### Test Results
+### Test Results Summary
 The site is mostly functioning well with all but one test passing.
 ## Conclusion
 
