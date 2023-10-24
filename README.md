@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-- **Project Name: Etsy Testing
-- **Date started: 1.10.2023
-- **Author: Dimitar Nikolov
+- **Project Name:** Etsy Testing
+- **Date started**: 1.10.2023
+- **Author:** Dimitar Nikolov
 - **Project Status:** [Testing/Development/InProgress]
 
 ## Introduction
